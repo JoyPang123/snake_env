@@ -199,14 +199,17 @@ class SnakeEnv(gym.Env):
         """The reward are defined as follow:
         1. Done: (crush on itself or crush on walls) -5
         2. Reach the apple: 3
-        3. Distance between its head and apple: (1 - dis) + 0.5
+        3. Normalized distance between its head and apple: (1 - dis)
         """
 
         self.snake.point(action_dict[choose_act])
         self.iter_count += 1
         done = self.snake.move()
         reach = check_eat(self.snake, self.apple)
-        new_obs = self._get_frame()
+        new_obs = {
+            "frame": self._get_frame(),
+            "1D-state": self._get_1D_state()
+        }
 
         if self.iter_count == self.max_iter:
             done = True
@@ -216,7 +219,7 @@ class SnakeEnv(gym.Env):
         elif reach:
             reward = 3
         else:
-            reward = 1 - (self._get_distance() / SCREEN_WIDTH)
+            reward = (1 - self._get_distance())
 
         return new_obs, reward, done, None
 
@@ -272,7 +275,7 @@ class SnakeEnv(gym.Env):
 
     def _get_frame(self):
         # Create white frame
-        empty_frame = np.full((GRID_WIDTH, GRID_HEIGHT, 3), 255)
+        empty_frame = np.full((SCREEN_WIDTH, SCREEN_HEIGHT, 3), 255, dtype=np.uint8)
 
         # Put in snake body with color black
         for x, y in self.snake.positions:
@@ -292,4 +295,4 @@ class SnakeEnv(gym.Env):
         snake_head_x, snake_head_y = self.snake.positions[0]
         apple_x, apple_y = self.apple.position
 
-        return abs(snake_head_x - apple_x) + abs(snake_head_y - apple_y)
+        return abs(snake_head_x - apple_x) / SCREEN_WIDTH + abs(snake_head_y - apple_y) / SCREEN_HEIGHT
