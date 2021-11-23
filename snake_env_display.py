@@ -7,7 +7,9 @@ if __name__ == "__main__":
     while True:
         env.render()
         action = env.action_space.sample()
-        _, _, done, _ = env.step(action)
+        _, reward, done, _ = env.step(action)
+        print(reward)
 
         if done:
+            env.render()
             break

@@ -6,7 +6,7 @@ import pygame
 from gym import spaces
 
 # Set the screen size
-SCREEN_WIDTH, SCREEN_HEIGHT = 600, 400
+SCREEN_WIDTH, SCREEN_HEIGHT = 200, 200
 
 # Make a grid with 10x10 pixels
 GRID_SIZE = 10
@@ -46,6 +46,25 @@ def draw_box(surf, color, pos):
     r = pygame.Rect((pos[0], pos[1]), (GRID_SIZE, GRID_SIZE))
     # Draw on the surface
     pygame.draw.rect(surf, color, r)
+
+
+def check_eat(snake, apple):
+    """Check whether snake eat the apple
+    Args:
+        snake: Snake object, used to obtain the head position of snake
+        apple: Apple object, used to obtain the position of apple
+    Return: None
+    """
+
+    if snake.get_head_position() == apple.position:
+        # After eating an apple, increase length
+        #  and regenerate the apple
+        snake.length += 1
+        apple.randomize()
+
+        return True
+
+    return False
 
 
 class Apple(object):
@@ -150,21 +169,6 @@ class SnakeAgent(object):
             draw_box(surf, self.color, p)
 
 
-def check_eat(snake, apple):
-    """Check whether snake eat the apple
-    Args:
-        snake: Snake object, used to obtain the head position of snake
-        apple: Apple object, used to obtain the position of apple
-    Return: None
-    """
-
-    if snake.get_head_position() == apple.position:
-        # After eating an apple, increase length
-        #  and regenerate the apple
-        snake.length += 1
-        apple.randomize()
-
-
 class SnakeEnv(gym.Env):
     def __init__(self, seed=None, max_iter=1000):
         self.seed = seed
@@ -192,14 +196,27 @@ class SnakeEnv(gym.Env):
         })
 
     def step(self, choose_act):
+        """The reward are defined as follow:
+        1. Done: (crush on itself or crush on walls) -5
+        2. Reach the apple: 3
+        3. Distance between its head and apple: (1 - dis) + 0.5
+        """
+
         self.snake.point(action_dict[choose_act])
         self.iter_count += 1
         done = self.snake.move()
+        reach = check_eat(self.snake, self.apple)
         new_obs = self._get_frame()
-        reward = 0
 
         if self.iter_count == self.max_iter:
             done = True
+
+        if done:
+            reward = -5
+        elif reach:
+            reward = 3
+        else:
+            reward = 1 - (self._get_distance() / SCREEN_WIDTH)
 
         return new_obs, reward, done, None
 
