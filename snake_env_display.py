@@ -2,7 +2,7 @@ import gym
 import cv2
 
 if __name__ == "__main__":
-    env = gym.make('snake:snake-v0')
+    env = gym.make("snake:snake-v0")
     state = env.reset()
 
     # Save the result

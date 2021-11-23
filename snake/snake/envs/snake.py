@@ -197,9 +197,9 @@ class SnakeEnv(gym.Env):
 
     def step(self, choose_act):
         """The reward are defined as follow:
-        1. Done: (crush on itself or crush on walls) -5
-        2. Reach the apple: 3
-        3. Normalized distance between its head and apple: (1 - dis)
+        1. Done: (crush on itself or crush on walls) -10
+        2. Reach the apple: 20
+        3. Default per-step reward of -1
         """
 
         self.snake.point(action_dict[choose_act])
@@ -215,11 +215,11 @@ class SnakeEnv(gym.Env):
             done = True
 
         if done:
-            reward = -5
+            reward = -10
         elif reach:
-            reward = 3
+            reward = 20
         else:
-            reward = (1 - self._get_distance())
+            reward = -0.5
 
         return new_obs, reward, done, None
 
