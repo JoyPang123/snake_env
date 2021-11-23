@@ -1,3 +1,7 @@
+"""Testing function adapted from
+https://github.com/openai/gym/blob/master/tests/envs/test_envs.py
+"""
+
 import gym
 import numpy as np
 import pytest
@@ -5,10 +9,6 @@ from gym import spaces
 
 
 def test_env():
-    """Testing function adapted from
-    https://github.com/openai/gym/blob/master/tests/envs/test_envs.py
-    """
-
     # Capture warning from making environment
     with pytest.warns(None) as warnings:
         env = gym.make("snake:snake-v0")
