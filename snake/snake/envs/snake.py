@@ -95,7 +95,8 @@ class Apple(object):
 class SnakeAgent(object):
     def __init__(self):
         self.restart()
-        self.color = (0, 0, 0)
+        self.head_color = (0, 0, 255)
+        self.body_color = (0, 0, 0)
 
     def get_head_position(self):
         """Return the head position (index 0) of snake
@@ -165,8 +166,9 @@ class SnakeAgent(object):
             self: Instance itself
             surf:,
         """
-        for p in self.positions:
-            draw_box(surf, self.color, p)
+        draw_box(surf, self.head_color, self.positions[0])
+        for p in self.positions[1:]:
+            draw_box(surf, self.body_color, p)
 
 
 class SnakeEnv(gym.Env):
@@ -215,11 +217,11 @@ class SnakeEnv(gym.Env):
             done = True
 
         if done:
-            reward = -10
+            reward = -5
         elif reach:
             reward = 20
         else:
-            reward = -0.5
+            reward = -0.02
 
         return new_obs, reward, done, None
 
@@ -278,12 +280,15 @@ class SnakeEnv(gym.Env):
         empty_frame = np.full((SCREEN_WIDTH, SCREEN_HEIGHT, 3), 255, dtype=np.uint8)
 
         # Put in snake body with color black
-        for x, y in self.snake.positions:
-            x, y = int(x), int(y)
-            empty_frame[x:x + GRID_SIZE, y:y + GRID_SIZE] = self.snake.color
+        head_y, head_x = int(self.snake.positions[0][0]), int(self.snake.positions[0][1])
+        empty_frame[head_x:head_x + GRID_SIZE, head_y:head_y + GRID_SIZE] = self.snake.head_color
+        for x, y in self.snake.positions[1:]:
+            # x, y axis should interchange
+            y, x = int(x), int(y)
+            empty_frame[x:x + GRID_SIZE, y:y + GRID_SIZE] = self.snake.body_color
 
         # Put in apple with color red
-        apple_x, apple_y = self.apple.position
+        apple_y, apple_x = self.apple.position
         empty_frame[apple_x:apple_x + GRID_SIZE, apple_y:apple_y + GRID_SIZE] = self.apple.color
 
         return empty_frame
