@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     while True:
         env.render()
-        obs, _, done, _ = env.step(1)
+        obs, _, done, _ = env.step(env.action_space.sample())
 
         if done:
             env.render()
