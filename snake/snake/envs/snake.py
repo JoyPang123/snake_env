@@ -60,6 +60,7 @@ def check_eat(snake, apple):
         # After eating an apple, increase length
         #  and regenerate the apple
         snake.length += 1
+        apple.snake_positions = snake.positions
         apple.randomize()
 
         return True
@@ -82,9 +83,10 @@ def check_crush(snake, walls):
 
 
 class Apple(object):
-    def __init__(self):
+    def __init__(self, snake_positions):
         self.position = (0, 0)
         self.color = (255, 0, 0)
+        self.snake_positions = snake_positions
         self.randomize()
 
     def randomize(self):
@@ -94,6 +96,9 @@ class Apple(object):
         Return: None
         """
         self.position = (random.randint(0, GRID_WIDTH - 1) * GRID_SIZE, random.randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
+        for snake_pos in self.snake_positions:
+            if self.position == snake_pos:
+                self.randomize()
 
     def draw(self, surf):
         """Draw the apple on the surface
@@ -225,7 +230,7 @@ class SnakeEnv(gym.Env):
 
         # Initialize the agent and the target
         self.snake = SnakeAgent()
-        self.apple = Apple()
+        self.apple = Apple(self.snake.positions[0])
         self.walls = [Wall(self.apple.position) for _ in range(5)]
 
         # Only up, down, left, right
