@@ -111,24 +111,25 @@ class Apple(object):
 
 
 class Wall(object):
-    def __init__(self, apple_pos):
+    def __init__(self, apple_pos, snake_pos):
         self.position = (0, 0)
-        self.not_pos = apple_pos
+        self.apple_pos = apple_pos
+        self.snake_pos = snake_pos
         self.color = (0, 0, 0)
         self.randomize()
 
     def randomize(self):
-        """Randomly set the position of the apple
+        """Randomly set the position of the wall
         Args:
             self: Instance itself
         Return: None
         """
         self.position = (random.randint(0, GRID_WIDTH - 1) * GRID_SIZE, random.randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
-        if self.position == self.not_pos:
+        if self.position == self.apple_pos or self.position == self.snake_pos:
             self.randomize()
 
     def draw(self, surf):
-        """Draw the apple on the surface
+        """Draw the wall on the surface
         Args:
             self: Instance itself
             surf: Surface to draw on
@@ -230,8 +231,8 @@ class SnakeEnv(gym.Env):
 
         # Initialize the agent and the target
         self.snake = SnakeAgent()
-        self.apple = Apple(self.snake.positions[0])
-        self.walls = [Wall(self.apple.position) for _ in range(5)]
+        self.apple = Apple(self.snake.positions)
+        self.walls = [Wall(self.apple.position, self.snake.get_head_position()) for _ in range(5)]
 
         # Only up, down, left, right
         self.action_space = spaces.Discrete(4)
