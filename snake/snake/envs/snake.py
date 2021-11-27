@@ -197,6 +197,9 @@ class SnakeEnv(gym.Env):
             )
         })
 
+        # Curr state
+        self.state = None
+
     def step(self, choose_act):
         """The reward are defined as follow:
         1. Done: (crush on itself or crush on walls) -10
@@ -223,6 +226,8 @@ class SnakeEnv(gym.Env):
         else:
             reward = -0.02
 
+        self.state = new_obs
+
         return new_obs, reward, done, None
 
     def reset(self):
@@ -235,10 +240,12 @@ class SnakeEnv(gym.Env):
         curr_frame = self._get_frame()
         curr_1D_state = self._get_1D_state()
 
-        return {
+        self.state = {
             "1D_state": curr_1D_state,
             "frame": curr_frame,
         }
+
+        return self.state
 
     def render(self, mode="human"):
         if self.screen is None:

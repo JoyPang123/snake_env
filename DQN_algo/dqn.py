@@ -7,7 +7,7 @@ import torch
 import torchvision.transforms as transforms
 from torchvision.transforms import InterpolationMode
 
-from DQN.model import Model
+from DQN_algo.model import Model
 
 
 def update(model, batch_size,

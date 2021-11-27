@@ -4,8 +4,8 @@ import gym
 import torch
 import torch.nn as nn
 
-from DQN.dqn import DQN
-from DQN.dqn import update
+from DQN_algo.dqn import DQN
+from DQN_algo.dqn import update
 
 
 def train(model, env, learning_rate,
@@ -72,10 +72,6 @@ def train(model, env, learning_rate,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--weight", type=str, required=True,
-        help="Place for saving the model's weight"
-    )
-    parser.add_argument(
         "--batch_size", type=int, default=64,
         help="Batch size for training"
     )
@@ -98,10 +94,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "--replace_iter", type=int, default=10,
         help="Iteration for replacing target by eval network"
-    )
-    parser.add_argument(
-        "--max_len", type=int, default=1000,
-        help="Maximum len of the deque"
     )
     parser.add_argument(
         "--max_len", type=int, default=1000,
@@ -141,7 +133,7 @@ if __name__ == "__main__":
 
     # Start training DQN
     average_reward_history, reward_history, loss_history = train(
-        model=dqn_model, env=env, learning_rate=args.learning_rate,
+        model=dqn_model, env=env, learning_rate=args.lr,
         iteration=args.iteration, batch_size=args.batch_size, tau=args.tau,
         gamma=args.gamma
     )
