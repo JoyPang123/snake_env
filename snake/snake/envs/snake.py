@@ -67,6 +67,20 @@ def check_eat(snake, apple):
     return False
 
 
+def check_crush(snake, walls):
+    """Check whether snake eat the apple
+    Args:
+        snake: Snake object, used to obtain the head position of snake
+        walls: Apple object, used to obtain the position of apple
+    Return: None
+    """
+
+    for wall in walls:
+        if snake.get_head_position() == wall.position:
+            return True
+    return False
+
+
 class Apple(object):
     def __init__(self):
         self.position = (0, 0)
@@ -80,6 +94,33 @@ class Apple(object):
         Return: None
         """
         self.position = (random.randint(0, GRID_WIDTH - 1) * GRID_SIZE, random.randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
+
+    def draw(self, surf):
+        """Draw the apple on the surface
+        Args:
+            self: Instance itself
+            surf: Surface to draw on
+        Return: None
+        """
+        draw_box(surf, self.color, self.position)
+
+
+class Wall(object):
+    def __init__(self, apple_pos):
+        self.position = (0, 0)
+        self.not_pos = apple_pos
+        self.color = (0, 0, 0)
+        self.randomize()
+
+    def randomize(self):
+        """Randomly set the position of the apple
+        Args:
+            self: Instance itself
+        Return: None
+        """
+        self.position = (random.randint(0, GRID_WIDTH - 1) * GRID_SIZE, random.randint(0, GRID_HEIGHT - 1) * GRID_SIZE)
+        if self.position == self.not_pos:
+            self.randomize()
 
     def draw(self, surf):
         """Draw the apple on the surface
@@ -185,6 +226,7 @@ class SnakeEnv(gym.Env):
         # Initialize the agent and the target
         self.snake = SnakeAgent()
         self.apple = Apple()
+        self.walls = [Wall(self.apple.position) for _ in range(5)]
 
         # Only up, down, left, right
         self.action_space = spaces.Discrete(4)
@@ -211,12 +253,13 @@ class SnakeEnv(gym.Env):
         self.iter_count += 1
         done = self.snake.move()
         reach = check_eat(self.snake, self.apple)
+        crush = check_crush(self.snake, self.walls)
         new_obs = {
             "frame": self._get_frame(),
             "1D-state": self._get_1D_state()
         }
 
-        if self.iter_count == self.max_iter:
+        if self.iter_count == self.max_iter or crush:
             done = True
 
         if done:
@@ -262,6 +305,8 @@ class SnakeEnv(gym.Env):
         # Draw snake and apple on screen
         self.snake.draw(surface)
         self.apple.draw(surface)
+        for wall in self.walls:
+            wall.draw(surface)
 
         # Show the score
         font = pygame.font.Font(None, 36)
@@ -293,6 +338,12 @@ class SnakeEnv(gym.Env):
             # x, y axis should interchange
             y, x = int(x), int(y)
             empty_frame[x:x + GRID_SIZE, y:y + GRID_SIZE] = self.snake.body_color
+
+        # Put in walls with color black
+        for wall in self.walls:
+            # x, y axis should interchange
+            y, x = int(wall.position[0]), int(wall.position[1])
+            empty_frame[x:x + GRID_SIZE, y:y + GRID_SIZE] = wall.color
 
         # Put in apple with color red
         apple_y, apple_x = self.apple.position
