@@ -82,6 +82,10 @@ def check_crush(snake, walls):
     return False
 
 
+def hamming_dis(point1, point2):
+    return abs(point1[0] - point2[0]) / GRID_WIDTH + abs(point1[1] - point2[1]) / GRID_HEIGHT
+
+
 class Apple(object):
     def __init__(self, snake_positions):
         self.position = (0, 0)
@@ -233,6 +237,7 @@ class SnakeEnv(gym.Env):
         self.snake = SnakeAgent()
         self.apple = Apple(self.snake.positions)
         self.walls = [Wall(self.apple.position, self.snake.get_head_position()) for _ in range(5)]
+        self.last_head_pos = self.snake.get_head_position()
 
         # Only up, down, left, right
         self.action_space = spaces.Discrete(4)
@@ -273,7 +278,9 @@ class SnakeEnv(gym.Env):
         elif reach:
             reward = 20
         else:
-            reward = -0.02
+            cur_dis = hamming_dis(self.snake.get_head_position(), self.apple.position)
+            last_dis = hamming_dis(self.last_head_pos, self.apple.position)
+            reward = (cur_dis - last_dis)
 
         self.state = new_obs
 
@@ -288,6 +295,8 @@ class SnakeEnv(gym.Env):
         # Get the current state
         curr_frame = self._get_frame()
         curr_1D_state = self._get_1D_state()
+
+        self.last_head_pos = self.snake.get_head_position()
 
         self.state = {
             "1D_state": curr_1D_state,
