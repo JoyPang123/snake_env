@@ -280,7 +280,7 @@ class SnakeEnv(gym.Env):
         else:
             cur_dis = hamming_dis(self.snake.get_head_position(), self.apple.position)
             last_dis = hamming_dis(self.last_head_pos, self.apple.position)
-            reward = (cur_dis - last_dis)
+            reward = -(cur_dis - last_dis)
 
         self.state = new_obs
 
