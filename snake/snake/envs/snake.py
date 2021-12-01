@@ -274,14 +274,15 @@ class SnakeEnv(gym.Env):
             done = True
 
         if done:
-            reward = -5
+            reward = -10
         elif reach:
             reward = 20
         else:
             cur_dis = hamming_dis(self.snake.get_head_position(), self.apple.position)
             last_dis = hamming_dis(self.last_head_pos, self.apple.position)
-            reward = -(cur_dis - last_dis)
+            reward = -(cur_dis - last_dis) / 100
 
+        self.last_head_pos = self.snake.get_head_position()
         self.state = new_obs
 
         return new_obs, reward, done, None
