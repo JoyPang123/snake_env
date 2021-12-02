@@ -7,7 +7,7 @@ import torch
 import torchvision.transforms as transforms
 from torchvision.transforms import InterpolationMode
 
-from DQN_algo.model import Model
+from DQN_algo.model import DQN
 
 
 def update(model, batch_size,
@@ -76,8 +76,8 @@ class DQN:
                  replace_iter=150, max_len=100,
                  EPS_START=0.9, EPS_END=0.05, EPS_DECAY=200):
         # Create network for target and evaluation
-        self.eval_net = Model(num_actions=num_actions).to(device)
-        self.target_net = Model(num_actions=num_actions).to(device)
+        self.eval_net = DQN(num_actions=num_actions).to(device)
+        self.target_net = DQN(num_actions=num_actions).to(device)
 
         # Set up the replay experience
         self.replay = deque(maxlen=max_len)
