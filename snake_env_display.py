@@ -1,4 +1,5 @@
 import gym
+import cv2
 
 if __name__ == "__main__":
     env = gym.make("snake:snake-v0")
@@ -11,3 +12,4 @@ if __name__ == "__main__":
         if done:
             env.render()
             break
+
