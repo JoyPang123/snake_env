@@ -223,14 +223,17 @@ class SnakeAgent(object):
 
 
 class SnakeEnv(gym.Env):
-    def __init__(self, seed=None, max_iter=1000):
+    def __init__(self, seed=None, mode="cheat", max_iter=1000):
         self.seed = seed
+
+        assert mode in ["cheat", "hardworking"], "You're mode should be in [cheat, hardworking]."
 
         # Initialize the render screen to None
         self.screen = None
 
-        # The maximum iteration for a env is `max_iter` steps (default to 1000)
+        # The maximum iteration for an env is `max_iter` steps (default to 1000)
         self.max_iter = max_iter
+        self.mode = mode
         self.iter_count = 0
 
         # Initialize the agent and the target
@@ -277,10 +280,12 @@ class SnakeEnv(gym.Env):
             reward = -10
         elif reach:
             reward = 20
-        else:
+        elif self.mode == "cheat":
             cur_dis = hamming_dis(self.snake.get_head_position(), self.apple.position)
             last_dis = hamming_dis(self.last_head_pos, self.apple.position)
             reward = -(cur_dis - last_dis)
+        else:
+            reward = -0.03 * self.snake.length
 
         self.last_head_pos = self.snake.get_head_position()
         self.state = new_obs

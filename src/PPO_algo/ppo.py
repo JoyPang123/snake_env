@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from PIL import Image
 
 from src.PPO_algo.model import ActorCritic
 
@@ -99,3 +100,27 @@ class PPO:
 
         # Clear buffer
         self.buffer.clear()
+
+
+def save_fig(ppo_agent, env, img_transforms, file_name):
+    gif_frames = []
+    state = env.reset()
+    gif_frames.append(state)
+
+    # Run the game
+    while True:
+        # Select action with policy
+        action = ppo_agent.select_action(img_transforms(state["frame"]).unsqueeze(0))
+        state, reward, done, _ = env.step(action)
+        gif_frames.append(state)
+
+        if done:
+            break
+
+    # Append the frames
+    img, *imgs = [Image.fromarray(frame) for frame in gif_frames]
+    img.save(
+        fp=file_name, format="GIF", append_images=imgs,
+        save_all=True, optimize=True, duration=150,
+        loop=0
+    )

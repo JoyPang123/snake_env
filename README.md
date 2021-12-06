@@ -3,6 +3,7 @@
 ## Snake env
 
 ### Introduction
+
 * The snake environment supports 4 actions: **[up, right, down, top]**.
 * The snake environment will have extra blocks for better learning.
 * The head is denoted with blue color and the rest of the body is black.
@@ -15,6 +16,7 @@
 ![snake env](assets/snake.gif)
 
 ### Install the snake env
+
 ```shell
 $ git clone https://github.com/JoyPang123/RL-Explore-with-Own-made-Env.git
 $ cd RL-Explore-with-Own-made-Env
@@ -22,23 +24,29 @@ $ pip install -e snake
 ```
 
 ### Test the snake env
+
 After installing the environment, users can test it using:
+
 ```shell
 $ python snake_env_display.py
 ```
 
 ### Test the files
+
 The test files are included in `test`. `test/envs` is for snake environment and `test/models` is for models' output dimension check.
+
 ```shell
 $ python -m pytest -v test
 ```
 
 ### Install the dependencies for training the model
+
 ```shell
 $ pip install -r requirements.txt
 ```
 
 ## Docker Environment
+
 The docker environment is also provide.
 
 ### Install and run
@@ -50,14 +58,16 @@ $ source Dockerfile/run_docker.sh
 ```
 
 ### Remove the image
+
 ```shell
 $ docker rmi snake
 ```
 
 ## Algorithm
 
+
 | Algorithm | Directory    | Colab                                                                                                                                                                                           |
-|-----------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | DQN       | src/DQN_algo | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/DQN_algo/DQN.ipynb) |
 | A2C       | src/A2C_algo | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/A2C_algo/A2C.ipynb) |
 | PPO       | src/PPO_algo | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/PPO_algo/PPO.ipynb) |
