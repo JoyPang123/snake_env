@@ -9,7 +9,7 @@ from gym import spaces
 SCREEN_WIDTH, SCREEN_HEIGHT = 200, 200
 
 # Make a grid with 10x10 pixels
-GRID_SIZE = 10
+GRID_SIZE = 20
 
 # Get a grid size
 GRID_WIDTH = int(SCREEN_WIDTH / GRID_SIZE)

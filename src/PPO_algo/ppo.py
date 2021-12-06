@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from PPO_algo.model import ActorCritic
+from src.PPO_algo.model import ActorCritic
 
 device = "cpu"
 

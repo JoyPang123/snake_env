@@ -4,8 +4,8 @@ import gym
 import torch
 import torch.nn as nn
 
-from DQN_algo.dqn import DQN
-from DQN_algo.dqn import update
+from src.DQN_algo.dqn import DQN
+from src.DQN_algo.dqn import update
 
 
 def train(model, env, learning_rate,

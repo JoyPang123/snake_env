@@ -4,8 +4,8 @@ import torch
 import torch.nn.functional as F
 import gym
 
-from A2C_algo.run_episode import run_episode
-from A2C_algo.model import ActorCritic
+from src.A2C_algo.run_episode import run_episode
+from src.A2C_algo.model import ActorCritic
 
 
 def update_params(worker_optim, values, log_probs, rewards,

@@ -27,14 +27,45 @@ After installing the environment, users can test it using:
 $ python snake_env_display.py
 ```
 
-## Test the environment
+### Test the environment
 The test files are included in `test`. `test/envs` is for snake environment and `test/models` is for models' output dimension check.
 ```shell
 $ python -m pytest -v test
 ```
 
-## Install the dependencies for training the model
+### Install the dependencies for training the model
 ```shell
 $ pip install -r requirements.txt
 ```
 
+## Docker Environment
+The docker environment is also provide.
+
+### Install and run
+
+```shell
+(Terminal)
+$ docker build -t snake Dockerfile
+$ docker run -it --rm snake
+```
+
+### Remove the images file
+```shell
+$ docker rmi snake
+```
+
+## Algorithm
+* DQN
+
+```shell
+$ cd src/DQN_algo
+```
+* A2C
+```shell
+$ cd src/A2C_algo
+```
+
+* PPO
+```shell
+$ cd src/PPO_algo
+```

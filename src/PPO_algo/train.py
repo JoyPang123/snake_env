@@ -4,7 +4,7 @@ https://github.com/nikhilbarhate99/PPO-PyTorch
 
 import gym
 import torchvision.transforms as transforms
-from PPO_algo.ppo import PPO
+from src.PPO_algo.ppo import PPO
 
 
 if __name__ == "__main__":
