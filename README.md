@@ -12,7 +12,7 @@
   * Crush on walls: -10
   * Others: -((new_head - apple_pos) - (old_head - apple_pos))
 
-![snake env](assets/output.mp4)
+![snake env](assets/snake.gif)
 
 ### Install the snake env
 ```shell
@@ -21,13 +21,13 @@ $ cd RL-Explore-with-Own-made-Env
 $ pip install -e snake
 ```
 
-### Test the env
+### Test the snake env
 After installing the environment, users can test it using:
 ```shell
 $ python snake_env_display.py
 ```
 
-### Test the environment
+### Test the files
 The test files are included in `test`. `test/envs` is for snake environment and `test/models` is for models' output dimension check.
 ```shell
 $ python -m pytest -v test
