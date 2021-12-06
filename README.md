@@ -46,31 +46,18 @@ The docker environment is also provide.
 ```shell
 (Terminal)
 $ docker build -t snake Dockerfile
-$ docker run -it --rm snake
+$ source Dockerfile/run_docker.sh
 ```
 
-### Remove the images file
+### Remove the image
 ```shell
 $ docker rmi snake
 ```
 
 ## Algorithm
-* DQN
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/DQN_algo/DQN.ipynb)
-```shell
-$ cd src/DQN_algo
-```
-* A2C
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/A2C_algo/A2C.ipynb)
-```shell
-$ cd src/A2C_algo
-```
-
-* PPO
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/PPO_algo/PPO.ipynb)
-```shell
-$ cd src/PPO_algo
-```
+| Algorithm | Directory    | Colab                                                                                                                                                                                           |
+|-----------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DQN       | src/DQN_algo | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/DQN_algo/DQN.ipynb) |
+| A2C       | src/A2C_algo | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/A2C_algo/A2C.ipynb) |
+| PPO       | src/PPO_algo | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/PPO_algo/PPO.ipynb) |

@@ -13,6 +13,7 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && python3.8 get-pip.py && rm get-
 RUN apt-get install -y \
     unzip \
     libglu1-mesa-dev libgl1-mesa-dev libosmesa6-dev \
+    libsdl1.2-dev libsdl-image1.2-dev \
     xvfb patchelf ffmpeg cmake swig
 
 # Link the command
@@ -23,6 +24,7 @@ RUN ln -s /usr/bin/python3.8 /usr/bin/python
 COPY requirements.txt ./
 RUN pip install -r requirements.txt && rm requirements.txt
 
+# Set up home directory
 ENV HOME="/root"
 WORKDIR ${HOME}
 

@@ -1,7 +1,12 @@
+import os
 import gym
-import cv2
+
+driver = "x11"
 
 if __name__ == "__main__":
+    if not os.getenv('SDL_VIDEODRIVER'):
+        os.environ['SDL_VIDEODRIVER'] = driver
+
     env = gym.make("snake:snake-v0")
     state = env.reset()
 
@@ -12,4 +17,3 @@ if __name__ == "__main__":
         if done:
             env.render()
             break
-
