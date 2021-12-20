@@ -280,8 +280,10 @@ class SnakeEnv(gym.Env):
         self.iter_count = 0
 
         if self.render_mode == "pygame":
+            global pygame
             import pygame
         else:
+            global pyglet
             import pyglet
 
         # Initialize the agent and the target
