@@ -3,12 +3,7 @@ import time
 
 import gym
 import numpy as np
-import pygame
-import pyglet
 from gym import spaces
-
-# Set the screen size
-from pyglet.window import FPSDisplay
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 200, 200
 
@@ -283,6 +278,11 @@ class SnakeEnv(gym.Env):
         self.mode = mode
         self.render_mode = render
         self.iter_count = 0
+
+        if self.render_mode == "pygame":
+            import pygame
+        else:
+            import pyglet
 
         # Initialize the agent and the target
         self.snake = SnakeAgent()
