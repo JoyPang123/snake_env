@@ -1,13 +1,12 @@
 import os
 import gym
 
-driver = "x11"
-
 if __name__ == "__main__":
     if not os.getenv('SDL_VIDEODRIVER'):
+        driver = "x11"
         os.environ['SDL_VIDEODRIVER'] = driver
 
-    env = gym.make("snake:snake-v0")
+    env = gym.make("snake:snake-v0", render="pyglet")
     state = env.reset()
 
     while True:

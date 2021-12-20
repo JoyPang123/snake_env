@@ -1,11 +1,15 @@
 import random
+import time
 
 import gym
 import numpy as np
 import pygame
+import pyglet
 from gym import spaces
 
 # Set the screen size
+from pyglet.window import FPSDisplay
+
 SCREEN_WIDTH, SCREEN_HEIGHT = 200, 200
 
 # Make a grid with 10x10 pixels
@@ -46,6 +50,22 @@ def draw_box(surf, color, pos):
     r = pygame.Rect((pos[0], pos[1]), (GRID_SIZE, GRID_SIZE))
     # Draw on the surface
     pygame.draw.rect(surf, color, r)
+
+
+def draw_box_gl(color, pos):
+    """Draw rectangle on surface
+    Args:
+    pos: The top-left place of rectangle
+    color: Color to draw
+    Return: None
+    """
+    pyglet.gl.glBegin(pyglet.gl.GL_QUADS)
+    pyglet.gl.glColor3d(*color)
+    pyglet.gl.glVertex2d(pos[0], pos[1])
+    pyglet.gl.glVertex2d(pos[0] + GRID_SIZE, pos[1])
+    pyglet.gl.glVertex2d(pos[0] + GRID_SIZE, pos[1] + GRID_SIZE)
+    pyglet.gl.glVertex2d(pos[0], pos[1] + GRID_SIZE)
+    pyglet.gl.glEnd()
 
 
 def check_eat(snake, apple):
@@ -113,6 +133,14 @@ class Apple(object):
         """
         draw_box(surf, self.color, self.position)
 
+    def draw_gl(self):
+        """Draw the wall on the surface
+        Args:
+            self: Instance itself
+        Return: None
+        """
+        draw_box_gl(self.color, self.position)
+
 
 class Wall(object):
     def __init__(self, apple_pos, snake_pos):
@@ -140,6 +168,14 @@ class Wall(object):
         Return: None
         """
         draw_box(surf, self.color, self.position)
+
+    def draw_gl(self):
+        """Draw the wall on the surface
+        Args:
+            self: Instance itself
+        Return: None
+        """
+        draw_box_gl(self.color, self.position)
 
 
 # noinspection PyAttributeOutsideInit
@@ -215,18 +251,29 @@ class SnakeAgent(object):
 
         Args:
             self: Instance itself
-            surf:,
+            surf: Surface to draw
         """
         draw_box(surf, self.head_color, self.positions[0])
         for p in self.positions[1:]:
             draw_box(surf, self.body_color, p)
 
+    def draw_gl(self):
+        """Draw the wall on the surface
+        Args:
+            self: Instance itself
+        Return: None
+        """
+        draw_box_gl(self.head_color, self.positions[0])
+        for p in self.positions[1:]:
+            draw_box_gl(self.body_color, p)
+
 
 class SnakeEnv(gym.Env):
-    def __init__(self, seed=None, mode="cheat", max_iter=1000):
+    def __init__(self, seed=None, mode="cheat", max_iter=1000, render="pygame"):
         self.seed = seed
 
         assert mode in ["cheat", "hardworking"], "You're mode should be in [cheat, hardworking]."
+        assert render in ["pygame", "pyglet"], "You're mode should be in [pygame, pyglet]"
 
         # Initialize the render screen to None
         self.screen = None
@@ -234,6 +281,7 @@ class SnakeEnv(gym.Env):
         # The maximum iteration for an env is `max_iter` steps (default to 1000)
         self.max_iter = max_iter
         self.mode = mode
+        self.render_mode = render
         self.iter_count = 0
 
         # Initialize the agent and the target
@@ -257,7 +305,7 @@ class SnakeEnv(gym.Env):
         self.state = None
 
     def step(self, choose_act):
-        """The reward are defined as follow:
+        """The reward are defined as follows:
         1. Done: (crush on itself or crush on walls) -10
         2. Reach the apple: 20
         3. Default per-step reward of -1
@@ -312,41 +360,77 @@ class SnakeEnv(gym.Env):
         return self.state
 
     def render(self, mode="human"):
-        if self.screen is None:
-            pygame.init()
-            self.screen = pygame.display.set_mode(
-                (SCREEN_WIDTH, SCREEN_HEIGHT)
-            )
-        clock = pygame.time.Clock()
+        if self.render_mode == "pygame":
+            if self.screen is None:
+                pygame.init()
+                pygame.display.set_caption("Snake")
+                self.screen = pygame.display.set_mode(
+                    (SCREEN_WIDTH, SCREEN_HEIGHT)
+                )
+            clock = pygame.time.Clock()
 
-        # Fill the background with white color
-        surface = pygame.Surface(self.screen.get_size())
-        surface.fill((255, 255, 255))
+            # Fill the background with white color
+            surface = pygame.Surface(self.screen.get_size())
+            surface.fill((255, 255, 255))
 
-        # Draw snake and apple on screen
-        self.snake.draw(surface)
-        self.apple.draw(surface)
-        for wall in self.walls:
-            wall.draw(surface)
+            # Draw snake and apple on screen
+            self.snake.draw(surface)
+            self.apple.draw(surface)
+            for wall in self.walls:
+                wall.draw(surface)
 
-        # Show the score
-        font = pygame.font.Font(None, 36)
-        text = font.render(str(self.snake.length - 1), True, (10, 10, 10))
-        text_pos = text.get_rect()
-        text_pos.centerx = 20
+            # Show the score
+            font = pygame.font.Font(None, 36)
+            text = font.render(str(self.snake.length - 1), True, (10, 10, 10))
+            text_pos = text.get_rect()
+            text_pos.centerx = 20
 
-        # Add object to the screen
-        surface.blit(text, text_pos)
-        self.screen.blit(surface, (0, 0))
+            # Add object to the screen
+            surface.blit(text, text_pos)
+            self.screen.blit(surface, (0, 0))
 
-        # Update the screen
-        pygame.display.flip()
-        pygame.display.update()
+            # Update the screen
+            pygame.display.flip()
+            pygame.display.update()
 
-        clock.tick(FPS + int(self.snake.length / 3))
+            clock.tick(FPS + int(self.snake.length / 3))
+        else:
+            if self.screen is None:
+                # Set up window and its white background
+                self.screen = pyglet.canvas.get_display()
+                screen = self.screen.get_screens()
+                config = screen[0].get_best_config()  # selecting the first screen
+                context = config.create_context(None)
+                self.window = pyglet.window.Window(
+                    SCREEN_WIDTH, SCREEN_HEIGHT,
+                    display=self.screen, context=context,
+                    config=config
+                )
+                self.window.set_caption("Snake")
+                pyglet.gl.glClearColor(1, 1, 1, 1)
+
+            self.window.clear()
+            self.window.switch_to()
+            self.window.dispatch_events()
+
+            pyglet.text.Label(
+                str(self.snake.length - 1), x=20, y=SCREEN_HEIGHT - 20,
+                color=(10, 10, 10, 255), font_size=20
+            ).draw()
+            self.snake.draw_gl()
+            self.apple.draw_gl()
+            for wall in self.walls:
+                wall.draw_gl()
+
+            self.window.flip()
+            time.sleep(1 / (FPS + int(self.snake.length / 3)))
 
     def close(self):
-        pygame.quit()
+        if self.render_mode == "pygame":
+            pygame.quit()
+        else:
+            self.screen.close()
+        self.screen = None
 
     def _get_frame(self):
         # Create white frame

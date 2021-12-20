@@ -1,9 +1,10 @@
+import torch
 from torch.distributions import Categorical
 
 import torchvision.transforms as transforms
 
 
-def run_episode(worker_env, worker_model, n_steps=1000):
+def run_episode(worker_env, worker_model, device, n_steps=1000):
     # Transform the image
     img_transforms = transforms.Compose([
         transforms.ToTensor(),
@@ -18,7 +19,7 @@ def run_episode(worker_env, worker_model, n_steps=1000):
 
     while True:
         count_length += 1
-        policy, value = worker_model(state.unsqueeze(0).float())
+        policy, value = worker_model(state.unsqueeze(0).float().to(device))
 
         values.append(value.view(-1))
         logits = policy.view(-1)

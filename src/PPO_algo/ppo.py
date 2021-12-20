@@ -112,7 +112,7 @@ def save_fig(ppo_agent, env, img_transforms, file_name):
         # Select action with policy
         action = ppo_agent.select_action(img_transforms(state["frame"]).unsqueeze(0))
         state, reward, done, _ = env.step(action)
-        gif_frames.append(state)
+        gif_frames.append(state["frame"])
 
         if done:
             break
