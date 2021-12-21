@@ -3,6 +3,8 @@ import torch
 
 from src.DQN_algo import DQN
 from src.A2C_algo.model import ActorCritic as AC
+from src.DDPG_algo import Actor as DDPG_A
+from src.DDPG_algo import Critic as DDPG_C
 from src.PPO_algo.model import ActorCritic as PPO_AC
 
 NUM_ACTIONS = 4
@@ -26,6 +28,18 @@ def test_actor_critic():
     actor, critic = model(random_tensor)
 
     assert actor.shape == (1, NUM_ACTIONS) and critic.shape == (1, 1)
+
+
+def test_dpg():
+    random_tensor = torch.rand([1, 3, 64, 64])
+    actor = DDPG_A(4).eval()
+    critic = DDPG_C(4).eval()
+
+    act_res = actor(random_tensor)
+    cri_res = critic(random_tensor, act_res)
+
+    assert act_res.shape == (1, 4)
+    assert cri_res.shape == (1, 1)
 
 
 def test_ppo():
