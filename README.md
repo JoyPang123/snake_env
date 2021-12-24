@@ -38,8 +38,8 @@
 ### Install the snake env
 
 ```shell
-$ git clone https://github.com/JoyPang123/RL-Explore-with-Own-made-Env.git
-$ cd RL-Explore-with-Own-made-Env
+$ git clone https://github.com/JoyPang123/snake_env.git
+$ cd snake_env
 $ pip install -e snake
 ```
 
@@ -66,18 +66,21 @@ $ pip install -r requirements.txt
 ```
 
 ## Snake environment API
+
 There are three parameters:
-* `mode`: `str`   
+
+* `mode`: `str`
   Control two different modes - cheat and hardworking.
-* `max_iter`: `int`  
+* `max_iter`: `int`
   Maximum steps for an episode
-* `render`: `str`  
+* `render`: `str`
   Use pygame or pyglet to render the environment
 
 ```python
 # Default arguments
 env = gym.make("snake:snake-v0", mode="cheat", max_iter=1000, redner="pyglet")
 ```
+
 ## Docker Environment
 
 The docker environment is also provide.
@@ -96,17 +99,18 @@ $ source Dockerfile/run_docker.sh
 $ docker rmi snake
 ```
 
-
 ## Experiments
 
 ### Lunar
+
 * We first test the program on `lunar` environment:
-![lunar_training loss](assets/lunar_RL.png)
+  ![lunar_training loss](assets/lunar_RL.png)
 * Access to [asset folder](assets/lunar) to see our final result.
 
-
 ### Snake
+
 ![snake_training_loss](assets/snake_RL.png)
+
 * If we use `cheat` mode, the snake will not learn to eat apple but trying to approach apple only
 
 <br/>
@@ -117,7 +121,8 @@ $ docker rmi snake
 </p>
 
 * Below results are training with `hardworking` mode:
-<br/>
+  <br/>
+
 <p align="center">
   <img alt="rainbow-hardworking" src="assets/snake/Rainbow-hardworking.gif" />
   <img alt="ppo-hardworking" src="assets/snake/PPO-hardworking.gif" />
@@ -126,19 +131,19 @@ $ docker rmi snake
 
 > We found that when training rainbow on hardworking mode, it will always go up. Having no idea of the results😢.
 
-
 ## Algorithm
 
-| Algorithm                                                                                 | Directory                                          | Colab                                                                                                                                                                                                      |
-|-------------------------------------------------------------------------------------------|----------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A2C [(reference)](https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail)               | [src/A2C_algo](src/A2C_algo)                       | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/A2C_algo/A2C.ipynb)            |
-| DQN                                                                                       | [src/DQN_algo](src/DQN_algo)                       | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/DQN_algo/DQN.ipynb)            |
-| DDPG [(reference)](https://github.com/LxzGordon/Deep-Reinforcement-Learning-with-pytorch) | [src/DDPG_algo](src/DDPG_algo)                     | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/DDPG_algo/DDPG_Discrete.ipynb) |
-| PPO [(reference)](https://github.com/nikhilbarhate99/PPO-PyTorch)                         | [src/PPO_algo](src/PPO_algo)                       | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/RL-Explore-with-Own-made-Env/blob/main/src/PPO_algo/PPO.ipynb)            |
-| Rainbow                                                                                   | [Kaixhin repo](https://github.com/Kaixhin/Rainbow) | See repo                                                                                                                                                                                                   |
 
+| Algorithm                                                                                | Directory                                          | Colab                                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A2C[(reference)](https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail)               | [src/A2C_algo](src/A2C_algo)                       | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/snake_env/blob/main/src/A2C_algo/A2C.ipynb)            |
+| DQN                                                                                      | [src/DQN_algo](src/DQN_algo)                       | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/snake_env/blob/main/src/DQN_algo/DQN.ipynb)            |
+| DDPG[(reference)](https://github.com/LxzGordon/Deep-Reinforcement-Learning-with-pytorch) | [src/DDPG_algo](src/DDPG_algo)                     | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/snake_env/blob/main/src/DDPG_algo/DDPG_Discrete.ipynb) |
+| PPO[(reference)](https://github.com/nikhilbarhate99/PPO-PyTorch)                         | [src/PPO_algo](src/PPO_algo)                       | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/snake_env/blob/main/src/PPO_algo/PPO.ipynb)            |
+| Rainbow                                                                                  | [Kaixhin repo](https://github.com/Kaixhin/Rainbow) | See repo                                                                                                                                                                                |
 
 ## Citation
+
 ```bib
 @inproceedings{NIPS1999_6449f44a,
  author = {Konda, Vijay and Tsitsiklis, John},
@@ -164,6 +169,13 @@ $ docker rmi snake
   author={Lillicrap, Timothy P and Hunt, Jonathan J and Pritzel, Alexander and Heess, Nicolas and Erez, Tom and Tassa, Yuval and Silver, David and Wierstra, Daan},
   journal={arXiv preprint arXiv:1509.02971},
   year={2015}
+}
+
+@article{brockman2016openai, 
+  title={Openai gym}, 
+  author={Brockman, Greg and Cheung, Vicki and Pettersson, Ludwig and Schneider, Jonas and Schulman, John and Tang, Jie and Zaremba, Wojciech}, 
+  journal={arXiv preprint arXiv:1606.01540}, 
+  year={2016} 
 }
 
 @article{schulman2017proximal,
