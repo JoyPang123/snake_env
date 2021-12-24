@@ -101,11 +101,12 @@ $ docker rmi snake
 
 ### Lunar
 * We first test the program on `lunar` environment:
-![](assets/lunar_RL.png)
+![lunar_training loss](assets/lunar_RL.png)
 * Access to [asset folder](assets/lunar) to see our final result.
 
 
 ### Snake
+![snake_training_loss](assets/snake_RL.png)
 * If we use `cheat` mode, the snake will not learn to eat apple but trying to approach apple only
 
 <br/>
