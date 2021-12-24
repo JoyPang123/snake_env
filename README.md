@@ -1,19 +1,39 @@
-# README
+# Snake env
 
-## Snake env
+<p align="center">
+  <img alt="snake env" src="assets/snake.gif"/>
+</p>
 
-### Introduction
+## Introduction
 
 * The snake environment supports 4 actions: **[up, right, down, top]**.
 * The snake environment will have extra blocks for better learning.
 * The head is denoted with blue color and the rest of the body is black.
 * The apple is red.
-* Reward is designed:
-  * Eat apple: +20
-  * Crush on walls: -10
-  * Others: -((new_head - apple_pos) - (old_head - apple_pos))
-
-![snake env](assets/snake.gif)
+* Reward is designed as below:
+  <table>
+    <tr>
+        <td colspan="2"><strong>Description</strong></td>
+        <td><strong>Reward</strong></td>
+    </tr>
+    <tr>
+        <td colspan="2">Eat apple</td>
+        <td>+20</td>
+    </tr>
+    <tr>
+        <td colspan="2">Crush on walls</td>
+        <td>-10</td>
+    </tr>
+    <tr>
+        <td rowspan="2">Others</td>
+        <td>cheat</td>
+        <td>prev_target_dis - cur_target_dis</td>
+    </tr>
+    <tr>
+        <td>hardworking</td>
+        <td>-0.03 * snake_length</td>
+    </tr>
+  </table>
 
 ### Install the snake env
 
@@ -39,7 +59,7 @@ The test files are included in `test`. `test/envs` is for snake environment and 
 $ python -m pytest -v test
 ```
 
-### Install the dependencies for training the model
+### Install the dependencies
 
 ```shell
 $ pip install -r requirements.txt
@@ -62,22 +82,6 @@ env = gym.make("snake:snake-v0", mode="cheat", max_iter=1000, redner="pyglet")
 
 The docker environment is also provide.
 
-## Experiments
-
-### Lunar
-* We first test the program on `lunar` environment:
-![](assets/lunar_RL.png)
-* Access to [asset folder](assets/lunar) to see our final result.
-
-### Snake
-* If we use `cheat` mode, the snake will not learn to eat apple but trying to approach apple only
-* 
-<p align="center">
-  <img alt="rainbow-cheat" src=assets/snake/rainbow-cheat.gif />
-  <img alt="rainbow-cheat" src=assets/snake/rainbow-cheat.gif />
-  <br>Fig. (Left) Rainbow cheating. (Right) PPO cheating
-</p>
-
 ### Install and run
 
 ```shell
@@ -92,8 +96,37 @@ $ source Dockerfile/run_docker.sh
 $ docker rmi snake
 ```
 
-## Algorithm
 
+## Experiments
+
+### Lunar
+* We first test the program on `lunar` environment:
+![](assets/lunar_RL.png)
+* Access to [asset folder](assets/lunar) to see our final result.
+
+
+### Snake
+* If we use `cheat` mode, the snake will not learn to eat apple but trying to approach apple only
+
+<br/>
+<p align="center">
+  <img alt="rainbow-cheat" src="assets/snake/rainbow-cheat.gif" />
+  <img alt="ppo-cheat" src="assets/snake/PPO-cheat.gif" />
+  <br>Fig. (Left) Rainbow cheating. (Right) PPO cheating
+</p>
+
+* Below results are training with `hardworking` mode:
+<br/>
+<p align="center">
+  <img alt="rainbow-hardworking" src="assets/snake/Rainbow-hardworking.gif" />
+  <img alt="ppo-hardworking" src="assets/snake/PPO-hardworking.gif" />
+  <br>Fig. (Left) Rainbow hardworking. (Right) PPO hardworking
+</p>
+
+> We found that when training rainbow on hardworking mode, it will always go up. Having no idea of the results😢.
+
+
+## Algorithm
 
 | Algorithm                                                                                 | Directory                                          | Colab                                                                                                                                                                                                      |
 |-------------------------------------------------------------------------------------------|----------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -144,5 +177,13 @@ $ docker rmi snake
   author={Hessel, Matteo and Modayil, Joseph and Van Hasselt, Hado and Schaul, Tom and Ostrovski, Georg and Dabney, Will and Horgan, Dan and Piot, Bilal and Azar, Mohammad and Silver, David},
   booktitle={Thirty-second AAAI conference on artificial intelligence},
   year={2018}
+}
+
+@misc{wandb,
+  title = {Experiment Tracking with Weights and Biases},
+  year = {2020},
+  note = {Software available from wandb.com},
+  url={https://www.wandb.com/},
+  author = {Biewald, Lukas},
 }
 ```
