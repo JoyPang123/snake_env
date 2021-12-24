@@ -105,7 +105,15 @@ $ docker rmi snake
 
 * We first test the program on `lunar` environment:
   ![lunar_training loss](assets/lunar_RL.png)
-* Access to [asset folder](assets/lunar) to see our final result.
+* Results
+
+<p align="center">
+  <img alt="A2C-lunar" src="assets/lunar/A2C_lunar.gif" width="30%"/>
+  <img alt="DQN-lunar" src="assets/lunar/DQN_lunar.gif" width="30%"/><br/>
+  <img alt="DDPG-lunar" src="assets/lunar/DDPG_lunar.gif" width="30%"/>
+  <img alt="PPO-lunar" src="assets/lunar/PPO_lunar.gif" width="30%"/>
+  <br>Fig. (Top left) A2C. (Top right) DQN. (Bottom left) DDPG. (Bottom right) PPO.
+</p>
 
 ### Snake
 
@@ -117,7 +125,7 @@ $ docker rmi snake
 <p align="center">
   <img alt="rainbow-cheat" src="assets/snake/rainbow-cheat.gif" />
   <img alt="ppo-cheat" src="assets/snake/PPO-cheat.gif" />
-  <br>Fig. (Left) Rainbow cheating. (Right) PPO cheating
+  <br>Fig. (Left) Rainbow cheating. (Right) PPO cheating.
 </p>
 
 * Below results are training with `hardworking` mode:
@@ -126,7 +134,7 @@ $ docker rmi snake
 <p align="center">
   <img alt="rainbow-hardworking" src="assets/snake/Rainbow-hardworking.gif" />
   <img alt="ppo-hardworking" src="assets/snake/PPO-hardworking.gif" />
-  <br>Fig. (Left) Rainbow hardworking. (Right) PPO hardworking
+  <br>Fig. (Left) Rainbow hardworking. (Right) PPO hardworking.
 </p>
 
 > We found that when training rainbow on hardworking mode, it will always go up. Having no idea of the results😢.
@@ -135,7 +143,7 @@ $ docker rmi snake
 
 
 | Algorithm                                                                                | Directory                                          | Colab                                                                                                                                                                                   |
-| ------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|------------------------------------------------------------------------------------------|----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | A2C[(reference)](https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail)               | [src/A2C_algo](src/A2C_algo)                       | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/snake_env/blob/main/src/A2C_algo/A2C.ipynb)            |
 | DQN                                                                                      | [src/DQN_algo](src/DQN_algo)                       | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/snake_env/blob/main/src/DQN_algo/DQN.ipynb)            |
 | DDPG[(reference)](https://github.com/LxzGordon/Deep-Reinforcement-Learning-with-pytorch) | [src/DDPG_algo](src/DDPG_algo)                     | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JoyPang123/snake_env/blob/main/src/DDPG_algo/DDPG_Discrete.ipynb) |
