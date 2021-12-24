@@ -105,6 +105,7 @@ $ docker rmi snake
 
 * We first test the program on `lunar` environment:
   ![lunar_training loss](assets/lunar_RL.png)
+
 * Results
 
 <p align="center">
