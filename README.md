@@ -5,6 +5,7 @@
 </p>
 
 ## Introduction
+[![Run on Repl.it](https://repl.it/badge/github/Justin900429/python_workshop)](https://repl.it/github/Justin900429/python_workshop)
 
 * The snake environment supports 4 actions: **[up, right, down, top]**.
 * The snake environment will have extra blocks for better learning.
